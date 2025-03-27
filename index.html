@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="pfp1.png" type="image/x-icon">
+    <title>GhibliFlix</title>
+    <style>
+        :root {
+            --primary-color: #141414;
+            --secondary-color: #e50914;
+            --text-color: #ffffff;
+            --hover-color: #e6e6e6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+        }
+        
+        header {
+            display: flex;
+            align-items: center;
+            padding: 20px 40px;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 10%, transparent);
+            z-index: 1000;
+            transition: background-color 0.3s;
+        }
+        
+        header.scrolled {
+            background-color: var(--primary-color);
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-right: 30px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 45px;
+            /* width will adjust automatically based on aspect ratio */
+        }
+        
+        nav {
+            display: flex;
+            flex-grow: 1;
+        }
+        
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin-right: 20px;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--hover-color);
+        }
+        
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .buy-button {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: background-color 0.3s;
+        }
+        
+        .buy-button:hover {
+            background-color: #ff0f1f;
+        }
+        
+    .twitter-link {
+    color: var(--secondary-color); /* Using the same red as the buy button */
+    font-size: 1.5rem;
+    text-decoration: none;
+    transition: color 0.3s;
+    }
+
+    .twitter-link:hover {
+    color: #ff0f1f; /* Slightly brighter red on hover */
+    }
+        
+        main {
+            margin-top: 70px;
+            padding: 0 40px;
+        }
+        
+        .hero {
+            height: 80vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+        }
+        
+        .hero-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            z-index: -2;
+            opacity: 0.7;
+        }
+        
+        .hero-img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.7;
+            display: none; /* Hide by default, use background images instead */
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                rgba(20, 20, 20, 0.8) 0%,
+                rgba(20, 20, 20, 0.5) 50%,
+                rgba(20, 20, 20, 0.8) 100%
+            );
+            z-index: -1;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                rgba(20, 20, 20, 0.8) 0%,
+                rgba(20, 20, 20, 0.5) 50%,
+                rgba(20, 20, 20, 0.8) 100%
+            );
+            z-index: -1;
+        }
+        
+        .hero-content {
+            width: 50%;
+            padding-left: 60px;
+        }
+        
+        .hero-title {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero-description {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            width: 80%;
+        }
+        
+        .btn-container {
+            display: flex;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            border: none;
+            margin-right: 15px;
+        }
+        
+        .btn-play {
+            background-color: white;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .btn-play::before {
+            content: '▶';
+            margin-right: 10px;
+        }
+        
+        .btn-more {
+            background-color: rgba(109, 109, 110, 0.7);
+            color: white;
+            display: flex;
+            align-items: center;
+        }
+        
+        .btn-more::before {
+            content: 'ⓘ';
+            margin-right: 10px;
+        }
+        
+        .row {
+            margin-bottom: 40px;
+        }
+        
+        .row-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+        
+        .row-posters {
+            display: flex;
+            overflow-x: scroll;
+            padding: 10px 0;
+            scrollbar-width: none;
+        }
+        
+        .row-posters::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .row-poster {
+            position: relative;
+            margin-right: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            overflow: hidden;
+        }
+        
+        .row-poster:hover {
+            transform: scale(1.08);
+        }
+        
+        .poster-img {
+            width: 230px;
+            height: 330px;
+            object-fit: cover;
+            border-radius: 4px;
+            transition: transform 0.5s;
+        }
+        
+        .row-poster:hover .poster-img {
+            transform: scale(1.1);
+        }
+        
+        .large-poster {
+            height: 250px;
+        }
+        
+        .poster-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+            padding: 10px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+        
+        .row-poster:hover .poster-info {
+            opacity: 1;
+        }
+        
+        .poster-title {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        
+        .poster-buttons {
+            display: flex;
+        }
+        
+        .poster-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 1px solid white;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+        
+        .poster-btn:hover {
+            background-color: white;
+            color: var(--primary-color);
+        }
+        
+        footer {
+            padding: 40px;
+            margin-top: 60px;
+            color: #757575;
+            font-size: 0.8rem;
+        }
+        
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links a {
+            color: #757575;
+            text-decoration: none;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .copyright {
+            margin-top: 20px;
+        }
+        
+        /* Modal styles for embedded player */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow: auto;
+        }
+        
+        .modal-content {
+            position: relative;
+            background-color: var(--primary-color);
+            margin: 5% auto;
+            padding: 0;
+            width: 80%;
+            max-width: 900px;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .close-modal {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 2001;
+        }
+        
+        #player-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            background-color: #000;
+        }
+        
+        #player-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Movie detail modal */
+        #movie-detail-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            overflow: auto;
+        }
+        
+        .movie-detail-content {
+            position: relative;
+            margin: 5% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 900px;
+            background-color: rgba(20, 20, 20, 0.85);
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .movie-detail-header {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .movie-detail-poster {
+            width: 200px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 4px;
+            margin-right: 20px;
+        }
+        
+        .movie-detail-info {
+            flex-grow: 1;
+        }
+        
+        .movie-detail-title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .movie-detail-description {
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        
+        .movie-detail-buttons {
+            display: flex;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header id="header" class="">
+        <a href="https://ghibliflix.xyz/#" class="logo">
+            <img src="./GhibliFlix - Studio Ghibli Streaming_files/logo.png" alt="GhibliFlix Logo" id="site-logo">
+        </a>
+        <nav>
+            <a href="https://ghibliflix.xyz/#" class="nav-active">Home</a>
+            <a href="https://ghibliflix.xyz/#">Films</a>
+        </nav>
+        <div class="nav-right">
+            <a href="https://ghibliflix.xyz/#" class="buy-button" id="buy-gflix-button">BUY $GFLIX</a>
+            <a href="https://ghibliflix.xyz/#" class="twitter-link" id="twitter-link">𝕏</a>
+        </div>
+    </header>
+    
+    <main>
+        <div class="hero">
+            <div class="hero-background" id="hero-background" style="background-image: url(&quot;images/backgrounds/Ecological_Magic_My_Neighbor_Totoro.jpg&quot;);"></div>
+            <img src="https://ghibliflix.xyz/" alt="Featured Movie" class="hero-img" id="hero-image">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1 class="hero-title">My Neighbor Totoro</h1>
+                <p class="hero-description">When two girls move to the country to be near their ailing mother, they have adventures with the wondrous forest spirits who live nearby.</p>
+                <div class="btn-container">
+                    <button class="btn btn-play" data-movie-id="my-neighbor-totoro">Play</button>
+                    <button class="btn btn-more" data-movie-id="my-neighbor-totoro">More Info</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <h2 class="row-title">Most Popular</h2>
+            <div class="row-posters">
+                <div class="row-poster" data-movie-id="princess-mononoke">
+                    <img src="./GhibliFlix - Studio Ghibli Streaming_files/75919l.jpg" alt="Princess Mononoke" class="poster-img" id="princess-mononoke-img">
+                    <div class="poster-info">
+                        <h3 class="poster-title">Princess Mononoke</h3>
+                        <div class="poster-buttons">
+                            <button class="poster-btn play-btn">▶</button>
+                            <button class="poster-btn info-btn">ⓘ</button>
+                            <button class="poster-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-poster" data-movie-id="my-neighbor-totoro">
+                    <img src="./GhibliFlix - Studio Ghibli Streaming_files/75923l.jpg" alt="My Neighbor Totoro" class="poster-img" id="my-neighbor-totoro-img">
+                    <div class="poster-info">
+                        <h3 class="poster-title">My Neighbor Totoro</h3>
+                        <div class="poster-buttons">
+                            <button class="poster-btn play-btn">▶</button>
+                            <button class="poster-btn info-btn">ⓘ</button>
+                            <button class="poster-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-poster" data-movie-id="spirited-away">
+                    <img src="./GhibliFlix - Studio Ghibli Streaming_files/79597l.jpg" alt="Spirited Away" class="poster-img" id="spirited-away-img">
+                    <div class="poster-info">
+                        <h3 class="poster-title">Spirited Away</h3>
+                        <div class="poster-buttons">
+                            <button class="poster-btn play-btn">▶</button>
+                            <button class="poster-btn info-btn">ⓘ</button>
+                            <button class="poster-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-poster" data-movie-id="howls-moving-castle">
+                    <img src="./GhibliFlix - Studio Ghibli Streaming_files/138723l.jpg" alt="Howl&#39;s Moving Castle" class="poster-img" id="howls-moving-castle-img">
+                    <div class="poster-info">
+                        <h3 class="poster-title">Howl's Moving Castle</h3>
+                        <div class="poster-buttons">
+                            <button class="poster-btn play-btn">▶</button>
+                            <button class="poster-btn info-btn">ⓘ</button>
+                            <button class="poster-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-poster" data-movie-id="ponyo">
+                    <img src="./GhibliFlix - Studio Ghibli Streaming_files/138727l.jpg" alt="Ponyo" class="poster-img" id="ponyo-img">
+                    <div class="poster-info">
+                        <h3 class="poster-title">Ponyo</h3>
+                        <div class="poster-buttons">
+                            <button class="poster-btn play-btn">▶</button>
+                            <button class="poster-btn info-btn">ⓘ</button>
+                            <button class="poster-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <h2 class="row-title">Hayao Miyazaki Films</h2>
+            <div class="row-posters">
+                <div class="row-poster" data-movie-id="nausicaa">
+                    <img src="./GhibliFlix - Studio Ghibli Streaming_files/75914l.jpg" alt="Nausicaä of the Valley of the Wind" class="poster-img" id="nausicaa-img">
+                    <div class="poster-info">
+                        <h3 class="poster-title">Nausicaä of the Valley of the Wind</h3>
+                        <div class="poster-buttons">
+                            <button class="poster-btn play-btn">▶</button>
+                            <button class="poster-btn info-btn">ⓘ</button>
+                            <button class="poster-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-poster" data-movie-id="castle-in-the-sky">
+                    <img src="./GhibliFlix - Studio Ghibli Streaming_files/37799l.jpg" alt="Castle in the Sky" class="poster-img" id="castle-in-the-sky-img">
+                    <div class="poster-info">
+                        <h3 class="poster-title">Castle in the Sky</h3>
+                        <div class="poster-buttons">
+                            <button class="poster-btn play-btn">▶</button>
+                            <button class="poster-btn info-btn">ⓘ</button>
+                            <button class="poster-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-poster" data-movie-id="kikis-delivery-service">
+                    <img src="./GhibliFlix - Studio Ghibli Streaming_files/140483l.jpg" alt="Kiki&#39;s Delivery Service" class="poster-img" id="kikis-delivery-service-img">
+                    <div class="poster-info">
+                        <h3 class="poster-title">Kiki's Delivery Service</h3>
+                        <div class="poster-buttons">
+                            <button class="poster-btn play-btn">▶</button>
+                            <button class="poster-btn info-btn">ⓘ</button>
+                            <button class="poster-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-poster" data-movie-id="porco-rosso">
+                    <img src="./GhibliFlix - Studio Ghibli Streaming_files/138709l.jpg" alt="Porco Rosso" class="poster-img" id="porco-rosso-img">
+                    <div class="poster-info">
+                        <h3 class="poster-title">Porco Rosso</h3>
+                        <div class="poster-buttons">
+                            <button class="poster-btn play-btn">▶</button>
+                            <button class="poster-btn info-btn">ⓘ</button>
+                            <button class="poster-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-poster" data-movie-id="the-boy-and-the-heron">
+                    <img src="./GhibliFlix - Studio Ghibli Streaming_files/139654l.jpg" alt="The Boy and the Heron" class="poster-img" id="the-boy-and-the-heron-img">
+                    <div class="poster-info">
+                        <h3 class="poster-title">The Boy and the Heron</h3>
+                        <div class="poster-buttons">
+                            <button class="poster-btn play-btn">▶</button>
+                            <button class="poster-btn info-btn">ⓘ</button>
+                            <button class="poster-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <h2 class="row-title">Other Studio Ghibli Works</h2>
+            <div class="row-posters">
+                <div class="row-poster" data-movie-id="grave-of-the-fireflies">
+                    <img src="./GhibliFlix - Studio Ghibli Streaming_files/141208l.jpg" alt="Grave of the Fireflies" class="poster-img" id="grave-of-the-fireflies-img">
+                    <div class="poster-info">
+                        <h3 class="poster-title">Grave of the Fireflies</h3>
+                        <div class="poster-buttons">
+                            <button class="poster-btn play-btn">▶</button>
+                            <button class="poster-btn info-btn">ⓘ</button>
+                            <button class="poster-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-poster" data-movie-id="the-tale-of-princess-kaguya">
+                    <img src="./GhibliFlix - Studio Ghibli Streaming_files/93606l.jpg" alt="The Tale of The Princess Kaguya" class="poster-img" id="the-tale-of-princess-kaguya-img">
+                    <div class="poster-info">
+                        <h3 class="poster-title">The Tale of The Princess Kaguya</h3>
+                        <div class="poster-buttons">
+                            <button class="poster-btn play-btn">▶</button>
+                            <button class="poster-btn info-btn">ⓘ</button>
+                            <button class="poster-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-poster" data-movie-id="lupin-iii-vs-conan">
+                    <img src="./GhibliFlix - Studio Ghibli Streaming_files/51663l.jpg" alt="Lupin III vs. Detective Conan" class="poster-img" id="lupin-iii-vs-conan-img">
+                    <div class="poster-info">
+                        <h3 class="poster-title">Lupin III vs. Detective Conan</h3>
+                        <div class="poster-buttons">
+                            <button class="poster-btn play-btn">▶</button>
+                            <button class="poster-btn info-btn">ⓘ</button>
+                            <button class="poster-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Modal for embedded player -->
+    <div id="player-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">×</span>
+            <div id="player-container"></div>
+        </div>
+    </div>
+    
+    <!-- Modal for movie details -->
+    <div id="movie-detail-modal" class="modal">
+        <div class="movie-detail-content">
+            <span class="close-modal">×</span>
+            <div class="movie-detail-header">
+                <img src="https://ghibliflix.xyz/" alt="" class="movie-detail-poster" id="detail-poster">
+                <div class="movie-detail-info">
+                    <h2 class="movie-detail-title" id="detail-title"></h2>
+                    <p class="movie-detail-description" id="detail-description"></p>
+                    <div class="movie-detail-buttons">
+                        <button class="btn btn-play" id="detail-play-btn">Play</button>
+                        <button class="btn btn-more">My List</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Movie data with real links and GitHub-hosted backgrounds
+        const movies = {
+            'princess-mononoke': {
+                thumbnail: 'https://cdn.myanimelist.net/images/anime/7/75919l.jpg',
+                embedUrl: 'https://boosterx.stream/v/6ny49XLvwQJg/',
+                title: 'Princess Mononoke',
+                description: 'On a journey to find the cure for a Tatarigami\'s curse, Ashitaka finds himself in the middle of a war between the forest gods and Tatara, a mining colony.',
+                background: 'images/backgrounds/SanIntro.jpeg'
+            },
+            'my-neighbor-totoro': {
+                thumbnail: 'https://cdn.myanimelist.net/images/anime/4/75923l.jpg',
+                embedUrl: 'https://boosterx.stream/v/LPL3khyE2dhT/',
+                title: 'My Neighbor Totoro',
+                description: 'When two girls move to the country to be near their ailing mother, they have adventures with the wondrous forest spirits who live nearby.',
+                background: 'images/backgrounds/Ecological_Magic_My_Neighbor_Totoro.jpg'
+            },
+            'spirited-away': {
+                thumbnail: 'https://cdn.myanimelist.net/images/anime/6/79597l.jpg',
+                embedUrl: 'https://swishsrv.com/e/mb8u6ux58deb',
+                title: 'Spirited Away',
+                description: 'During her family\'s move to the suburbs, a sullen 10-year-old girl wanders into a world ruled by gods, witches, and spirits, and where humans are changed into beasts.',
+                background: 'images/backgrounds/thumb_20DEA1D8-3678-418E-8347-5D7DAFC98D83.jpg'
+            },
+            'howls-moving-castle': {
+                thumbnail: 'https://cdn.myanimelist.net/images/anime/1470/138723l.jpg',
+                embedUrl: 'https://swishsrv.com/e/xxbaz048a2br',
+                title: 'Howl\'s Moving Castle',
+                description: 'When an unconfident young woman is cursed with an old body by a spiteful witch, her only chance of breaking the spell lies with a self-indulgent yet insecure young wizard and his companions in his legged, walking castle.',
+                background: 'images/backgrounds/HOWLS_121_c0841.0144-1024x554_1024x554.jpg'
+            },
+            'castle-in-the-sky': {
+                thumbnail: 'https://cdn.myanimelist.net/images/anime/5/37799l.jpg',
+                embedUrl: 'https://boosterx.stream/v/SDxdlnuN7Lgf/',
+                title: 'Castle in the Sky',
+                description: 'A young boy and a girl with a magic crystal must race against pirates and foreign agents in a search for a legendary floating castle.',
+                background: 'images/backgrounds/1183450.jpg'
+            },
+            'lupin-iii-vs-conan': {
+                thumbnail: 'https://cdn.myanimelist.net/images/anime/4/51663l.jpg',
+                embedUrl: 'https://boosterx.stream/v/DhxQ31gnDG1T/',
+                title: 'Lupin III vs. Detective Conan',
+                description: 'Conan Edogawa crosses paths with the infamous Kaito Kid, and they end up facing a mysterious organization that aims at both of their heads.',
+                background: 'images/backgrounds/MV5BYTZkMGEyNTgtODI5MC00ZTFiLWExOWQtMmRiMTBmMDMzMGVlXkEyXkFqcGc@._V1_.jpg'
+            },
+            'grave-of-the-fireflies': {
+                thumbnail: 'https://cdn.myanimelist.net/images/anime/1485/141208l.jpg',
+                embedUrl: 'https://swishsrv.com/e/ihn4hw0rfils',
+                title: 'Grave of the Fireflies',
+                description: 'A young boy and his little sister struggle to survive in Japan during World War II.',
+                background: 'images/backgrounds/Grave-of-the-Fireflies-1024x576.jpeg'
+            },
+            'the-tale-of-princess-kaguya': {
+                thumbnail: 'https://cdn.myanimelist.net/images/anime/1935/93606l.jpg',
+                embedUrl: 'https://boosterx.stream/v/HPB18EDpzYZN/',
+                title: 'The Tale of Princess Kaguya',
+                description: 'Found inside a shining stalk of bamboo by an old bamboo cutter and his wife, a tiny girl grows rapidly into an exquisite young lady.',
+                background: 'images/backgrounds/GHI_Kaguya.jpg'
+            },
+            'nausicaa': {
+                thumbnail: 'https://cdn.myanimelist.net/images/anime/10/75914l.jpg',
+                embedUrl: 'https://boosterx.stream/v/zS9AH4bXvl3c/',
+                title: 'Nausicaä of the Valley of the Wind',
+                description: 'Warrior and pacifist Princess Nausicaä desperately struggles to prevent two warring nations from destroying themselves and their dying planet.',
+                background: 'images/backgrounds/90a45ed35ede2802fbad8eb1abc739b8cf9611c560d12383059d27c148ebf6eb.jpg'
+            },
+            'kikis-delivery-service': {
+                thumbnail: 'https://cdn.myanimelist.net/images/anime/1579/140483l.jpg',
+                embedUrl: 'https://boosterx.stream/v/6frP469mRdba/',
+                title: 'Kiki\'s Delivery Service',
+                description: 'A young witch, on her mandatory year of independent life, finds fitting into a new community difficult while she supports herself by running an air courier service.',
+                background: 'images/backgrounds/kikis-delivery-service-510353d0e522c.jpg'
+            },
+            'the-boy-and-the-heron': {
+                thumbnail: 'https://cdn.myanimelist.net/images/anime/1126/139654l.jpg',
+                embedUrl: 'https://swishsrv.com/e/dxp6nocrb89i',
+                title: 'The Boy and the Heron',
+                description: 'A young boy named Mahito yearning for his mother ventures into a world shared by the living and the dead. There, death comes to an end, and life finds a new beginning.',
+                background: 'images/backgrounds/the-boy-and-the-heron-official-english-trailer-65452d0a5079f.jpg'
+            },
+            'porco-rosso': {
+                thumbnail: 'https://cdn.myanimelist.net/images/anime/1728/138709l.jpg',
+                embedUrl: 'https://boosterx.stream/v/TAnihb3HSNrf/',
+                title: 'Porco Rosso',
+                description: 'In 1930s Italy, a veteran World War I pilot is cursed to look like an anthropomorphic pig.',
+                background: 'images/backgrounds/porcorosso.jpg'
+            },
+            'ponyo': {
+                thumbnail: 'https://cdn.myanimelist.net/images/anime/1331/138727l.jpg',
+                embedUrl: 'https://boosterx.stream/v/3DB6fv1yHZnR/',
+                title: 'Ponyo',
+                description: 'A five-year-old boy develops a relationship with Ponyo, a young goldfish princess who longs to become a human after falling in love with him.',
+                background: 'images/backgrounds/cover40.jpg'
+            }
+        };
+
+        // Function to change hero movie (used when hovering over posters)
+        function changeHeroMovie(movieId) {
+            const movie = movies[movieId];
+            if (movie) {
+                // Update hero title and description
+                document.querySelector('.hero-title').textContent = movie.title;
+                document.querySelector('.hero-description').textContent = movie.description;
+                
+                // Update hero background image
+                const heroBackground = document.getElementById('hero-background');
+                if (heroBackground && movie.background) {
+                    heroBackground.style.backgroundImage = `url('${movie.background}')`;
+                }
+                
+                // Update buttons data-movie-id
+                document.querySelector('.btn-play').setAttribute('data-movie-id', movieId);
+                document.querySelector('.btn-more').setAttribute('data-movie-id', movieId);
+            }
+        }
+
+        // Function to open the embedded player modal
+        function openPlayerModal(movieId) {
+            const modal = document.getElementById('player-modal');
+            const playerContainer = document.getElementById('player-container');
+            const movie = movies[movieId];
+            
+            if (movie && movie.embedUrl) {
+                playerContainer.innerHTML = `<iframe src="${movie.embedUrl}" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>`;
+                modal.style.display = 'block';
+            } else {
+                console.error('Movie data not found or embed URL not set');
+            }
+        }
+
+        // Function to open movie details modal
+        function openMovieDetailModal(movieId) {
+            const modal = document.getElementById('movie-detail-modal');
+            const detailPoster = document.getElementById('detail-poster');
+            const detailTitle = document.getElementById('detail-title');
+            const detailDescription = document.getElementById('detail-description');
+            const detailPlayBtn = document.getElementById('detail-play-btn');
+            const modalContent = document.querySelector('.movie-detail-content');
+            
+            const movie = movies[movieId];
+            
+            if (movie) {
+                detailPoster.src = movie.thumbnail;
+                detailPoster.alt = movie.title;
+                detailTitle.textContent = movie.title;
+                detailDescription.textContent = movie.description;
+                
+                // Set background image if available
+                if (movie.background && modalContent) {
+                    modalContent.style.backgroundImage = `linear-gradient(rgba(20, 20, 20, 0.85), rgba(20, 20, 20, 0.85)), url('${movie.background}')`;
+                    modalContent.style.backgroundSize = 'cover';
+                    modalContent.style.backgroundPosition = 'center';
+                } else {
+                    // Fallback to using thumbnail as background
+                    modalContent.style.backgroundImage = `linear-gradient(rgba(20, 20, 20, 0.85), rgba(20, 20, 20, 0.85)), url('${movie.thumbnail}')`;
+                    modalContent.style.backgroundSize = 'cover';
+                    modalContent.style.backgroundPosition = 'center';
+                }
+                
+                // Set up play button functionality
+                detailPlayBtn.setAttribute('data-movie-id', movieId);
+                detailPlayBtn.addEventListener('click', function() {
+                    modal.style.display = 'none';
+                    openPlayerModal(movieId);
+                });
+                
+                modal.style.display = 'block';
+            } else {
+                console.error('Movie data not found');
+            }
+        }
+
+        // Function to set up all image sources based on movie data
+        function initializeImages() {
+            // Set all movie poster images
+            for (const [movieId, data] of Object.entries(movies)) {
+                const imgElement = document.getElementById(`${movieId}-img`);
+                if (imgElement) {
+                    imgElement.src = data.thumbnail;
+                }
+            }
+            
+            // Set the hero background to Spirited Away
+            changeHeroMovie('spirited-away');
+        }
+
+        // Function to set up all movie interaction events
+        function setupMovieInteractions() {
+            // Set up event listeners for all movie posters
+            document.querySelectorAll('.row-poster').forEach(poster => {
+                const movieId = poster.getAttribute('data-movie-id');
+                
+                // Click event to play the movie
+                poster.addEventListener('click', function() {
+                    openPlayerModal(movieId);
+                });
+                
+                // Mouseover event to change hero content (feature film showcase)
+                poster.addEventListener('mouseenter', function() {
+                    if (movieId !== 'spirited-away') { // Only change if not already displaying
+                        changeHeroMovie(movieId);
+                    }
+                });
+            });
+            
+            // Set up event listeners for play buttons
+            document.querySelectorAll('.play-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent triggering the poster click event
+                    const movieId = this.closest('.row-poster').getAttribute('data-movie-id');
+                    openPlayerModal(movieId);
+                });
+            });
+            
+            // Set up event listeners for info buttons
+            document.querySelectorAll('.info-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation(); // Prevent triggering the poster click event
+                    const movieId = this.closest('.row-poster').getAttribute('data-movie-id');
+                    openMovieDetailModal(movieId);
+                });
+            });
+            
+            // Set up hero play button
+            document.querySelector('.btn-play').addEventListener('click', function() {
+                const movieId = this.getAttribute('data-movie-id');
+                openPlayerModal(movieId);
+            });
+            
+            // Set up hero more info button
+            document.querySelector('.btn-more').addEventListener('click', function() {
+                const movieId = this.getAttribute('data-movie-id');
+                openMovieDetailModal(movieId);
+            });
+            
+            // Set up modal close buttons
+            document.querySelectorAll('.close-modal').forEach(closeBtn => {
+                closeBtn.addEventListener('click', function() {
+                    const modal = this.closest('.modal');
+                    modal.style.display = 'none';
+                    
+                    // Clear player if it's the player modal
+                    if (modal.id === 'player-modal') {
+                        document.getElementById('player-container').innerHTML = '';
+                    }
+                });
+            });
+            
+            // Close modals when clicking outside of modal content
+            window.addEventListener('click', function(event) {
+                document.querySelectorAll('.modal').forEach(modal => {
+                    if (event.target === modal) {
+                        modal.style.display = 'none';
+                        
+                        // Clear player if it's the player modal
+                        if (modal.id === 'player-modal') {
+                            document.getElementById('player-container').innerHTML = '';
+                        }
+                    }
+                });
+            });
+            
+            // Set up Buy $GFLIX button and Twitter link
+            const buyButton = document.getElementById('buy-gflix-button');
+            if (buyButton) {
+                buyButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Placeholder - will be updated with actual URL
+                    window.open('https://pump.fun/', '_blank');
+                });
+            }
+            
+            const twitterLink = document.getElementById('twitter-link');
+            if (twitterLink) {
+                twitterLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // Placeholder - will be updated with actual URL
+                    window.open('https://x.com/ghibliflixsol', '_blank');
+                });
+            }
+        }
+
+        // Initialize the page when DOM content loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Make header background visible on scroll
+            window.addEventListener('scroll', function() {
+                var header = document.getElementById('header');
+                if (window.scrollY > 10) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+            
+            // Load all images from movie data
+            initializeImages();
+            
+            // Add event listeners to all movie posters
+            setupMovieInteractions();
+        });
+    </script>
+
+
+</body></html>
